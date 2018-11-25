@@ -23,10 +23,4 @@ class UserTest < ActiveSupport::TestCase
       users(:mallory_archer).destroy!
     end
   end
-
-  test 'when creating a user with a too short password' do
-    user = User.create(email: 'some@email.com', first_name: 'FirstName', last_name: 'LastName', password: '1234567', password_confirmation: '1234567')
-
-    assert_equal ['Password is too short (minimum is 8 characters)'], user.errors.full_messages
-  end
 end

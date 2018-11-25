@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_24_230427) do
+ActiveRecord::Schema.define(version: 2018_11_25_204345) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -65,16 +65,12 @@ ActiveRecord::Schema.define(version: 2018_11_24_230427) do
     t.string "browser", null: false
     t.string "browser_version", null: false
     t.string "device", null: false
-    t.datetime "expiring_at", null: false
-    t.boolean "invalidated", default: false, null: false
-    t.bigint "invalidated_by_id"
     t.inet "ip_address", null: false
     t.string "platform", null: false
     t.string "platform_version", null: false
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["invalidated_by_id"], name: "index_sessions_on_invalidated_by_id"
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
@@ -83,7 +79,6 @@ ActiveRecord::Schema.define(version: 2018_11_24_230427) do
     t.string "first_name", null: false
     t.string "last_name", null: false
     t.string "nickname"
-    t.string "password_digest", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email"
@@ -93,5 +88,4 @@ ActiveRecord::Schema.define(version: 2018_11_24_230427) do
   add_foreign_key "roles_users", "users"
   add_foreign_key "session_activities", "sessions"
   add_foreign_key "sessions", "users"
-  add_foreign_key "sessions", "users", column: "invalidated_by_id"
 end

@@ -2,9 +2,6 @@ sterling_archer_session:
   browser: Internet Exploder
   browser_version: 6
   device: 'Unknown'
-  expiring_at: <%= Rails.configuration.access_token_expire_seconds.seconds.from_now %>
-  invalidated: false
-  invalidated_by:
   ip_address: 1.2.3.4
   platform: 'Windows XP'
   platform_version: '5.1.2600'

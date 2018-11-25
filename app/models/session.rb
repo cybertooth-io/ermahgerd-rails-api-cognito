@@ -5,7 +5,7 @@ class Session < ApplicationRecord
   # Ignore Removed Columns
   # --------------------------------------------------------------------------------------------------------------------
 
-  self.ignored_columns = ['ruid']
+  self.ignored_columns = %w[expiring_at invalidated invalidated_by_id ruid]
 
   # Auto-Strip
   # --------------------------------------------------------------------------------------------------------------------
@@ -33,19 +33,8 @@ class Session < ApplicationRecord
     presence: true
   )
 
-  validates(
-    :invalidated_by,
-    presence: true,
-    on: :update
-  )
-
-  # boolean presence check...crazy I know (http://stackoverflow.com/a/4721574/545137)
-  validates :invalidated, inclusion: { in: [true, false] }
-
   # Relationships
   # --------------------------------------------------------------------------------------------------------------------
-
-  belongs_to :invalidated_by, class_name: 'User', optional: true
 
   belongs_to :user
 

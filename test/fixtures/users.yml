@@ -3,7 +3,6 @@ sterling_archer:
   first_name: Sterling
   last_name: Archer
   nickname: Duchess
-  password_digest: <%= BCrypt::Password.create("secret", cost: 4) %>
   roles: [guest]
 
 mallory_archer:
@@ -11,7 +10,6 @@ mallory_archer:
   first_name: Mallory
   last_name: Archer
   nickname:
-  password_digest: <%= BCrypt::Password.create("secret", cost: 4) %>
   roles: [guest]
 
 some_administrator:
@@ -19,7 +17,6 @@ some_administrator:
   first_name: Some
   last_name: Admin
   nickname:
-  password_digest: <%= BCrypt::Password.create("secret", cost: 4) %>
   roles: [administrator]
 
 some_other_administrator:
@@ -27,7 +24,6 @@ some_other_administrator:
   first_name: Other
   last_name: Admin
   nickname:
-  password_digest: <%= BCrypt::Password.create("secret", cost: 4) %>
   roles: [administrator]
 
 some_guest:
@@ -35,6 +31,5 @@ some_guest:
   first_name: Some
   last_name: Guest
   nickname:
-  password_digest: <%= BCrypt::Password.create("secret", cost: 4) %>
   roles: [guest]
 

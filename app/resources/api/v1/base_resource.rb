@@ -5,7 +5,7 @@ module Api
     # A Pundit-Scoped resource used in conjuntion with its namespaced policy.
     # This resource makes a point of not permitting the create/update of the `created_at` or `updated_at` fields.
     class BaseResource < JSONAPI::Resource
-      include JSONAPI::Authorization::PunditScopedResource
+      include JSONAPI::Authorization::PunditScopedResource # I can't figure out when this concern comes into play
       abstract
 
       # Attributes

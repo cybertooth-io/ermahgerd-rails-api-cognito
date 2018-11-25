@@ -9,15 +9,11 @@ User.seed_once(
     first_name: 'Dan',
     last_name: 'Nelson',
     nickname: 'Hollywood',
-    password: 'secret',
-    password_confirmation: 'secret',
     roles: [ADMIN]
   },
   email: 'bradf.83@gmail.com',
   first_name: 'Brad',
   last_name: 'Fontaine',
   nickname: 'Gorilla',
-  password: 'secret',
-  password_confirmation: 'secret',
   roles: [ADMIN]
 )

@@ -17,14 +17,10 @@ Rails.application.routes.draw do
 
   namespace :api, constraints: { format: :json } do
     namespace :v1 do
+      jsonapi_resource :current_user, except: %i[create destroy]
       jsonapi_resources :roles
       jsonapi_resources :session_activities
-      jsonapi_resources :sessions do
-        member do
-          patch :invalidate
-          put :invalidate
-        end
-      end
+      jsonapi_resources :sessions
       jsonapi_resources :users
     end
   end

@@ -79,11 +79,6 @@ gem 'browser'
 
 gem 'sidekiq', '~> 5.2'
 
-# Strong Passwords if you want (https://github.com/bdmac/strong_password)
-# ----------------------------------------------------------------------------------------------------------------------
-
-# gem 'strong_password', '~> 0.0.6'
-
 # Catch unsafe migrations at dev time (https://github.com/ankane/strong_migrations)
 # ----------------------------------------------------------------------------------------------------------------------
 
