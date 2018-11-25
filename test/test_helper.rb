@@ -2,6 +2,7 @@
 
 ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
+require 'json/jwt'
 require 'rails/test_help'
 require 'sidekiq/testing'
 
@@ -20,36 +21,76 @@ module ActiveSupport
       Timecop.return
     end
 
-    # Helper to log a given user in with cookie based authentication
-    # @return headers with the `X-CSRF-Token` assigned; you must pass this to your HTTP actions (e.g. `get v1_users_url, headers: @headers`)
-    def login(user, options = {})
-      password = options[:password] || 'secret' # default 'secret'
-
+    def auth(user, _options = {})
       Rails.logger.info '------------------------------------------------------------------------------------------'
-      Rails.logger.info "Cookie Authentication as #{user.email}"
+      Rails.logger.info "AWS Cognito Token Authentication as #{user.email}"
       Rails.logger.info '------------------------------------------------------------------------------------------'
 
-      post cookie_login_url, headers: { 'User-Agent': USER_AGENT }, params: { email: user.email, password: password }
+      now_in_seconds = Time.zone.now.to_i
 
-      @csrf_token = ::JSON.parse(response.body)['csrf']
+      jwt_id = ::JSON::JWT.new(id_payload(now_in_seconds, user))
+      jwt_id.alg = :RS256
+      jwt_id.kid = kid_id
+      @id_token = jwt_id.sign(rsa_id_private_key)
+
+      jwt_access = ::JSON::JWT.new(access_payload(now_in_seconds))
+      jwt_access.alg = :RS256
+      jwt_access.kid = kid_access
+      @access_token = jwt_access.sign(rsa_access_private_key)
+
       @headers = { 'Content-Type': JSONAPI::MEDIA_TYPE }
-      @headers[JWTSessions.csrf_header] = @csrf_token
+      @headers[Ermahgerd::HEADER_AUTHORIZATION] = "Bearer #{@id_token}"
+      @headers
     end
 
-    # Helper to log a given user in with cookie based authentication
-    # @return headers with the `X-CSRF-Token` assigned; you must pass this to your HTTP actions (e.g. `get v1_users_url, headers: @headers`)
-    def token(user, options = {})
-      password = options[:password] || 'secret' # default 'secret'
+    private
 
-      Rails.logger.info '------------------------------------------------------------------------------------------'
-      Rails.logger.info "Token Authentication as #{user.email}"
-      Rails.logger.info '------------------------------------------------------------------------------------------'
+    def id_payload(now_in_seconds, user)
+      {
+        "aud": Rails.configuration.token_aud,
+        "auth_time": now_in_seconds,
+        "cognito:username": user.email,
+        "email": user.email,
+        "email_verified": true,
+        "exp": now_in_seconds + 3600, # expires in an hour
+        "iat": now_in_seconds,
+        "iss": Rails.configuration.token_iss,
+        "sub": 'aaaaaaaa-bbbb-cccc-dddd-example',
+        "token_use": 'id'
+      }
+    end
 
-      post token_login_url, headers: { 'User-Agent': USER_AGENT }, params: { email: user.email, password: password }
+    def access_payload(now_in_seconds)
+      {
+        "auth_time": now_in_seconds,
+        "exp": now_in_seconds + 3600, # expires in an hour
+        "iat": now_in_seconds,
+        "iss": Rails.configuration.token_iss,
+        "scope": 'aws.cognito.signin.user.admin',
+        "sub": 'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee',
+        "token_use": 'access',
+        "username": 'janedoe@example.com'
+      }
+    end
 
-      @access_token = ::JSON.parse(response.body)['access']
-      @headers = { 'Content-Type': JSONAPI::MEDIA_TYPE }
-      @headers[JWTSessions.access_header] = @access_token
+    # Used exclusively in test environment for signing fake tokens
+    def kid_id
+      rsa_id_private_key.to_jwk[:kid]
+    end
+
+    # Used exclusively in test environment for signing fake tokens
+    def kid_access
+      rsa_access_private_key.to_jwk[:kid]
+    end
+
+    # Used exclusively in test environment for signing fake tokens
+    def rsa_access_private_key
+      @rsa_access_private_key ||= OpenSSL::PKey::RSA.new(File.read(Rails.root.join('config', 'test-access-private.key')))
+    end
+
+    # Used exclusively in test environment for signing fake tokens
+    def rsa_id_private_key
+      @rsa_id_private_key ||= OpenSSL::PKey::RSA.new(File.read(Rails.root.join('config', 'test-id-private.key')))
     end
   end
 end

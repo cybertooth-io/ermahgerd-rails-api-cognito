@@ -6,6 +6,8 @@ module Api
   module V1
     class SessionsControllerTest < ActionDispatch::IntegrationTest
       test 'when destroying another user session' do
+        skip 'Invalidation is not going to be achieved through this application'
+
         mallory_archer = users(:mallory_archer)
         login(mallory_archer) # logging in mallory so we can invalidate her!
 
@@ -23,6 +25,8 @@ module Api
       end
 
       test 'when destroying a session that has already been destroyed' do
+        skip 'Invalidation is not going to be achieved through this application'
+
         mallory_archer = users(:mallory_archer)
         login(mallory_archer) # logging in mallory so we can invalidate her!
 
@@ -42,6 +46,8 @@ module Api
       end
 
       test 'when session is invalidated the access token is immediately unusable' do
+        skip 'Invalidation is not going to be achieved through this application'
+
         Timecop.freeze
 
         some_administrator = users(:some_administrator)

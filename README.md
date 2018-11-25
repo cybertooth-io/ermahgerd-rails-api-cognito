@@ -1,4 +1,4 @@
-# README  - ermahgerd-rails-api-jwt
+# README  - ermahgerd-rails-api-cognito
          
 The Rails API server for Canadian Pump & Packing Distribution.  Serves up JSONAPI payloads for an EmberJs SPA
 over at [https://github.com/cybertooth-io/ccpdist-com-emberjs](https://github.com/cybertooth-io/ccpdist-com-emberjs).
@@ -39,9 +39,7 @@ $ rake db:seed_fu
 
 ### Redis
 
-Redis is used by JWTSessions to store Tokens and is also used by Sidekiq to queue up jobs.
-
-JWTSessions is configured in `config/initializers/jwt_session.rb` to use database `0`.
+Redis is used by Sidekiq to queue up jobs.
 
 Sidekiq is configured in `config/initializers/sidekiq.rb` to use database `1`.
 
@@ -107,7 +105,7 @@ $ rails credentials:edit
 
 `secret_key_base` - used by Rails in many ways (e.g. BCrypt)
 
-`secret_jwt_encryption_key` - used by JWT & JWT_Sessions to create access & refresh tokens
+`jwk_set` - the set of JWK from Cognito that will be used to decode supplied Authorization tokens
 
 ----
 

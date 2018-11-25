@@ -9,23 +9,6 @@ module Api
     # An `invalidate` action has been added to this controller.  This allows sessions to be destroyed
     # application-side for security reasons.
     class SessionsController < BaseJsonapiResourcesController
-      def invalidate
-        session = Session.find_by!(id: params[:id])
-
-        authorize session # pundit authorization
-
-        jwt_session = JWTSessions::Session.new(payload: payload)
-
-        begin
-          jwt_session.flush_by_uid(session.ruid)
-
-          render json: { data: {}, meta: {} }, status: :no_content
-        rescue JWTSessions::Errors::Unauthorized => exception
-          not_found exception
-        ensure
-          session.update!(invalidated: true, invalidated_by: current_user)
-        end
-      end
     end
   end
 end

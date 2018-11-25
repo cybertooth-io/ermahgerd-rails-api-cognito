@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_28_184336) do
+ActiveRecord::Schema.define(version: 2018_11_24_230427) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -71,12 +71,10 @@ ActiveRecord::Schema.define(version: 2018_10_28_184336) do
     t.inet "ip_address", null: false
     t.string "platform", null: false
     t.string "platform_version", null: false
-    t.string "ruid", null: false
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["invalidated_by_id"], name: "index_sessions_on_invalidated_by_id"
-    t.index ["ruid"], name: "index_sessions_on_ruid"
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 

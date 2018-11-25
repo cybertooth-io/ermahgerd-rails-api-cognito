@@ -3,14 +3,12 @@
 module Api
   module V1
     # Protected access to the `Session` model.
-    # Note that the RUID is not ever exposed or sent to through the wire.
     class SessionResource < BaseResource
       immutable # no CUD through controller
 
       # Attributes
       # ----------------------------------------------------------------------------------------------------------------
 
-      # Notice that we're not serializing the RUID column; keep that hidden to the public
       attributes(
         :browser,
         :browser_version,

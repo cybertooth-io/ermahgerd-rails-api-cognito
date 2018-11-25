@@ -56,7 +56,6 @@ en:
         ip_address: Login IP Address
         platform: Login From Platform
         platform_version: Platform Version
-        ruid: Refresh Token Identifier
         user: Belonging To
 
       session_activity:

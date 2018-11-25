@@ -2,19 +2,16 @@
 
 module Api
   module V1
-    # This is a JSONAPI-Resources ready controller that tests authentication using JWTSessions and tests
-    # authorization using Pundit policies.
+    # This is a JSONAPI-Resources ready controller that tests authentication using CognitoAuthorizer concern.
+    # Authorization is managed through Pundit policies.
     class BaseJsonapiResourcesController < ApplicationController
       include CurrentUser
       include JSONAPI::ActsAsResourceController
-      include JWTSessions::RailsAuthorization
+      include CognitoAuthorizer
       include Pundit
 
-      # :authorize_access_request! is part of JWTSessions and is all about ensuring valid `authenticated` requests
-      before_action :authorize_access_request!
-
-      # got this far, let's record this request in the `SessionActivity` table
-      before_action :record_session_activity
+      # :authorize_request! is from the CognitoAuthorizer concern ensuring valid `authenticated` requests
+      before_action :authorize_request!
 
       private
 
@@ -23,25 +20,6 @@ module Api
       # controller actions.
       def context
         { current_user: current_user }
-      end
-
-      # Using the setting in `config/application.rb` determine whether or not to record session activity
-      def record_session_activity
-        return unless Rails.configuration.record_session_activity
-
-        ruid = payload['ruid']
-        session = Session.find_by!(ruid: ruid)
-
-        if session.present?
-          return RecordSessionActivityWorker.perform_async(
-            Time.zone.now.iso8601,
-            request.remote_ip,
-            request.path,
-            session.id
-          )
-        end
-
-        Rails.logger.warn("Session with ruid of #{ruid} cannot be found.")
       end
     end
   end

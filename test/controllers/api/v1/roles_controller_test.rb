@@ -5,18 +5,8 @@ require 'test_helper'
 module Api
   module V1
     class RolesControllerTest < ActionDispatch::IntegrationTest
-      test 'when index' do
-        login(users(:some_administrator))
-
-        get api_v1_roles_url
-
-        assert_response :ok
-      end
-
       test 'when create' do
-        login(users(:some_administrator))
-
-        post api_v1_roles_url, headers: @headers, params: {
+        post api_v1_roles_url, headers: auth(users(:some_administrator)), params: {
           data: {
             attributes: {
               key: 'CON',
@@ -29,28 +19,10 @@ module Api
         assert_response :created
       end
 
-      test 'when show' do
-        login(users(:some_administrator))
-
-        get api_v1_role_url(roles(:guest))
-
-        assert_response :ok
-      end
-
-      test 'when destroy' do
-        login(users(:some_administrator))
-
-        delete api_v1_role_url(roles(:guest)), headers: @headers
-
-        assert_response :no_content
-      end
-
       test 'when update' do
-        login(users(:some_administrator))
-
         role = roles(:guest)
 
-        patch api_v1_role_url(role), headers: @headers, params: {
+        patch api_v1_role_url(role), headers: auth(users(:some_administrator)), params: {
           data: {
             attributes: {
               name: 'Guest Updated'
@@ -64,21 +36,17 @@ module Api
       end
 
       test 'when relationships users' do
-        login(users(:some_administrator))
-
         role = roles(:guest)
 
-        get api_v1_role_relationships_users_url(role), headers: @headers
+        get api_v1_role_relationships_users_url(role), headers: auth(users(:some_administrator))
 
         assert_response :ok
       end
 
       test 'when role users' do
-        login(users(:some_administrator))
-
         role = roles(:guest)
 
-        get api_v1_role_users_url(role), headers: @headers
+        get api_v1_role_users_url(role), headers: auth(users(:some_administrator))
 
         assert_response :ok
       end

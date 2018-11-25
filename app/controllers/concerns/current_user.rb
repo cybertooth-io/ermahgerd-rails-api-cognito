@@ -15,7 +15,7 @@ module CurrentUser
     # The current_user can be found in the JWT payload; eagerly load the user's roles so they can be discriminated
     # against
     def current_user
-      @current_user ||= User.includes(:roles).find_by(id: payload['user_id'])
+      @current_user ||= User.includes(:roles).find_by(email: id_token[:email])
     end
   end
 end

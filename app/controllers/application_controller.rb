@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-# Controller that all generated Controller inherit from.
-# Includes `JWTSessions::RailsAuthorization` which will provide very helpful hook methods such as
-# `:authorize_access_request!` and `:authorize_refresh_by_access_request!`.
+# Controller that all generated Controllers inherit from.
+# The CognitoAuthorizer will provide an `:authorize_request!` hook to ensure supplied tokens are valid.
+#
 # This controller is configured to rescue from the following errors:
 # 1. ActiveRecord::RecordNotFound - that way you can Model.find_by! and have the controller handle the error
-# 2. JWTSessions::Errors::Unauthorized - any unauthorized access comes here for processing
+# 2. Ermahgerd::Errors::Unauthorized - any unauthorized access comes here for processing
 #
 # Errors will be serialized to match the JSONAPI specification: https://jsonapi.org/format/#document-top-level &
 # https://jsonapi.org/format/#errors

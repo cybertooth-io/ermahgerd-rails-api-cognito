@@ -10,7 +10,6 @@ module Api
       # Attributes
       # ----------------------------------------------------------------------------------------------------------------
 
-      # Notice that we're not serializing the RUID column; keep that hidden to the public
       attributes(
         :ip_address,
         :path,
