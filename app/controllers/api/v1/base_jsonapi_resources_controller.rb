@@ -2,12 +2,12 @@
 
 module Api
   module V1
-    # This is a JSONAPI-Resources ready controller that tests authentication using CognitoAuthorizer concern.
+    # This is a JSONAPI-Resources ready controller that tests authentication using Ermahgerd::Authorizer concern.
     # Authorization is managed through Pundit policies.
     class BaseJsonapiResourcesController < ApplicationController
       include Ermahgerd::CurrentUser
       include JSONAPI::ActsAsResourceController
-      include CognitoAuthorizer
+      include Ermahgerd::Authorizer
       include Pundit # included for Posterity sake should we override a controller and need to `authorize`
 
       # :authorize_request! is from the CognitoAuthorizer concern ensuring valid `authenticated` requests
@@ -20,7 +20,7 @@ module Api
 
       # Using the setting in `config/application.rb` determine whether or not to record session activity
       def record_session_activity
-        return unless Rails.configuration.record_session_activity
+        return unless Ermahgerd.configuration.record_session_activity
 
         # TODO: we need to use the `jti` from the token
         # TODO: See https://en.wikipedia.org/wiki/JSON_Web_Token#Standard_fields

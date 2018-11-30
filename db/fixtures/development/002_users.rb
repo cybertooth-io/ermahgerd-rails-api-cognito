@@ -5,7 +5,7 @@ ADMIN = Role.find_by key: 'ADMIN'
 User.seed_once(
   :email,
   {
-    email: 'dan@cybertooth.io',
+    email: 'dan.nelson@cybertooth.io',
     first_name: 'Dan',
     last_name: 'Nelson',
     nickname: 'Hollywood',

@@ -2,9 +2,13 @@
 
 require 'test_helper'
 
+# We've used the Role class to perform nearly all authorization tests.
 module Api
   module V1
     class RolesControllerTest < ActionDispatch::IntegrationTest
+      # JSONAPI Basic CRUD Authorizations
+      # ----------------------------------------------------------------------------------------------------------------
+
       test 'when create' do
         assert_difference ['Role.count'] do
           post api_v1_roles_url, headers: auth(users(:some_administrator)), params: {
@@ -116,6 +120,9 @@ module Api
 
         assert_response :forbidden
       end
+
+      # JSONAPI Relationship CRUD Authorizations (INCOMPLETE)
+      # ----------------------------------------------------------------------------------------------------------------
 
       test 'when index relationships users' do
         role = roles(:guest)

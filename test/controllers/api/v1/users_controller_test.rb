@@ -23,7 +23,7 @@ module Api
 
         auth(users(:some_administrator))
 
-        Timecop.travel((Rails.configuration.access_token_expire_seconds - 3).seconds.from_now)
+        Timecop.travel((Ermahgerd.configuration.access_token_expire_seconds - 3).seconds.from_now)
 
         get api_v1_users_url, headers: @headers
 
@@ -36,7 +36,7 @@ module Api
 
         auth(users(:some_administrator))
 
-        Timecop.travel((Rails.configuration.access_token_expire_seconds + Rails.configuration.access_token_leeway_seconds + 3).seconds.from_now)
+        Timecop.travel((Ermahgerd.configuration.access_token_expire_seconds + Ermahgerd.configuration.access_token_leeway_seconds + 3).seconds.from_now)
 
         get api_v1_users_url, headers: @headers
 

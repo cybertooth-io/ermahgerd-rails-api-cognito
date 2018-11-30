@@ -15,6 +15,7 @@ You need the following:
 
 Perform the following from the command line:
 
+1. Create your config/credentials.yml.enc file (see _No Secrets Here - Credentials Instead_ section below).
 1. `bundle install` - will install any of the missing gems declared in the `Gemfile`
 1. `docker-compose up -d` - start up a Redis and PostgreSQL server in a container
 1. `rake db:create` - only required the first time, make sure your database is created
@@ -25,7 +26,6 @@ Perform the following from the command line:
 ### Running The Server
 
 `rails s` - to serve the API on [http://localhost:3000](http://localhost:3000)
-
 
 ### Database Seeds
 
@@ -83,29 +83,53 @@ If you're creating Sidekiq jobs please use the generator: `rails g sidekiq:worke
 
 ## Configuration Notes
 
-The `config/application.rb` sets the `record_session_activity` boolean which is used to determine whether
-we should be logging session activity.
+The `config/initializers/ermahgerd.rb` can be used to override a number of configuration options.
+
+The Configuration options are set to their defaults in `lib/ermahgerd/configuration.rb`; check out the
+initialize method.
 
 ----
 
-## Credentials
+## No Secrets Here - Credentials Instead
 
 As of Rails-5.2 secrets are hashed and locked down with the `config/master.key` file.  Run `rails credentials:help` for
 more information.
 
-Do you need to create a key?  Use `rake secret`
+This application ships with an already created `config/credentials.yml.enc` and we share the `master.key` amongst
+ourselves ... but not with Joe Public (or Josephine Public)
 
-Do you need to edit some secrets?  Do it from the command line:
+If you're forking this or trying it yourself, you'll want to:
 
-```bash
-$ rails credentials:edit
-```
+1. `rm config/credentials.yml.enc` to get rid of the current credentials
+1. `rails credentials:edit`
+1. Add the keys that are described in the section below; don't forget to use the `rake secret` to create your keys
 
 ### Keys in `config/credentials.yml.enc`
 
-`secret_key_base` - used by Rails in many ways (e.g. BCrypt)
+```bash
+$ rails credentials:edit  # you might have to destroy the existing `config/credentials.yml.enc` if this command fails
+```
 
-`jwk_set` - the set of JWK from Cognito that will be used to decode supplied Authorization tokens
+`secret_key_base` - used by most Rails apps in one way or another (e.g. BCrypt).  Please set this to a
+strong key; all environments (development, test, etc.) require this to be set.
+
+`jwk_set` - the set of JWK from Cognito that will be used to decode supplied Authorization tokens.  Yours will be found
+at `https://cognito-idp.{region}.amazonaws.com/{userPoolId}/.well-known/jwks.json`.  
+Check out the Cognito docs: [https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-tokens-verifying-a-jwt.html#amazon-cognito-user-pools-using-tokens-step-2]
+By default, the TEST environment of this app does not use this JWK set.  DEVELOPMENT & PRODUCTION do use this unless
+you change the configuration through `config/initializers/ermahgerd.rb`.
+
+`token_aud` - name of the audience in your token from Cognito; makes sure not just any Cognito token 
+can access this app.  You can get this information from your Cognito configuration or the payloads 
+from your authentication requests to Cognito.  By default, the TEST environment of this app does 
+not use this setting; it makes up a fake audience value.  DEVELOPMENT & PRODUCTION do use this unless
+you change the configuration through `config/initializers/ermahgerd.rb`.
+
+
+`token_iss` - the url that issued the token.  You can get this information from your Cognito configuration 
+or the payloads from your authentication requests to Cognito.  By default, the TEST environment of this app does 
+not use this setting; it makes up a fake audience value.  DEVELOPMENT & PRODUCTION do use this unless
+you change the configuration through `config/initializers/ermahgerd.rb`.
 
 ----
 
