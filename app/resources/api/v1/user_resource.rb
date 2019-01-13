@@ -15,20 +15,17 @@ module Api
 
       attributes(
         :email,
-        :first_name,
-        :last_name,
-        :nickname,
         {}
       )
 
       # http://jsonapi-resources.com/v0.9/guide/resources.html#Creatable-and-Updatable-Attributes
       def self.updatable_fields(context)
-        super + %i[password password_confirmed] - [:password_digest]
+        super
       end
 
       # http://jsonapi-resources.com/v0.9/guide/resources.html#Creatable-and-Updatable-Attributes
       def self.creatable_fields(context)
-        super + %i[password password_confirmed] - [:password_digest]
+        super
       end
 
       # Relationships

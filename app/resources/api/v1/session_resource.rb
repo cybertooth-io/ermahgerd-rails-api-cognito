@@ -13,8 +13,6 @@ module Api
         :browser,
         :browser_version,
         :device,
-        :expiring_at,
-        :invalidated,
         :ip_address,
         :platform,
         :platform_version,

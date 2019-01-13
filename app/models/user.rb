@@ -7,7 +7,7 @@ class User < ApplicationRecord
   # Ignore Removed Columns
   # --------------------------------------------------------------------------------------------------------------------
 
-  self.ignored_columns = ['password_digest']
+  self.ignored_columns = %w[first_name last_name nickname password_digest]
 
   # Callbacks
   # --------------------------------------------------------------------------------------------------------------------
@@ -19,17 +19,14 @@ class User < ApplicationRecord
   # Auto-Strip
   # --------------------------------------------------------------------------------------------------------------------
 
-  auto_strip_attributes(
-    :email,
-    :first_name,
-    :last_name,
-    :nickname
-  )
+  auto_strip_attributes(:email)
 
   # Validations
   # --------------------------------------------------------------------------------------------------------------------
 
-  validates :email, :first_name, :last_name, presence: true
+  validates :email, presence: true
+
+  validates :email, uniqueness: true
 
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
 

@@ -8,16 +8,10 @@ class SessionPolicy < ApplicationPolicy
     true
   end
 
-  # Any administrator can invalidate any session.
-  # Others will only be able to invalidate sessions that are bound to their user account.
-  def invalidate?
-    user.administrator? || record.user.id == user.id
-  end
-
   # Any administrator can show any session.
   # Others will only be able to show sessions that are bound to their user account.
   def show?
-    invalidate?
+    user.administrator? || record.user.id == user.id
   end
 
   # Administrator's have access to ALL session records.

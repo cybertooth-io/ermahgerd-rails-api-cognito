@@ -36,48 +36,53 @@ en:
   activerecord:
     # table column labels should be defined here
     attributes:
+      current_user:
+        created_at: Created On
+        email: Email Address
+        roles: Roles
+        sessions: Sessions
+        updated_at: Updated On
+
       role:
         created_at: Created On
+        key: Business Key
+        name: Name
+        notes: Notes
         updated_at: Updated On
-        key: Login From Browser
-        name: Browser Version
-        notes: Login Device Name
         users: Assigned To
 
       session:
         created_at: Created On
-        updated_at: Updated On
-        browser: Login From Browser
+        browser: Browser Name
         browser_version: Browser Version
-        device: Login Device Name
-        expiring_at: Expires On
-        invalidated: Invalidated
-        invalidated_by: Invalidated By
+        device: Device Name
         ip_address: Login IP Address
-        platform: Login From Platform
+        jti: JSON Web Token Identifier
+        platform: Platform
         platform_version: Platform Version
+        updated_at: Updated On
         user: Belonging To
 
       session_activity:
         created_at: Created On
-        updated_at: Updated On
         ip_address: Source IP Address
         path: Resource Path
         session: Session
+        updated_at: Updated On
 
       user:
         created_at: Created On
-        updated_at: Updated On
         email: Email Address
-        first_name: First Name
-        last_name: Last Name
-        nickname: Nickname
-        password_digest: Encrypted Password
         roles: Roles
         sessions: Sessions
+        updated_at: Updated On
 
     # table/model pluralization should be defined here
     models:
+      current_user:
+        one: Authenticated User
+        other: Authenticated User
+
       role:
         one: Role
         other: Roles
@@ -85,6 +90,10 @@ en:
       session:
         one: Session
         other: Sessions
+
+      session_activity:
+        one: Session Activity
+        other: Sessions Activities
 
       user:
         one: User
@@ -105,7 +114,6 @@ en:
   # https://github.com/rails/rails/blob/master/activerecord/lib/active_record/locale/en.yml
   errors:
     messages:
-      already_true: has already been set to true
 
   # Pundit message customization
   # --------------------------------------------------------------------------------------------------------------------

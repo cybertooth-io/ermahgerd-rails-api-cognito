@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-class IdTokenVerificationsControllerTest < ActionDispatch::IntegrationTest
+class IdTokenVerificationsTest < ActionDispatch::IntegrationTest
   test 'when id token is not supplied' do
     headers = auth(users(:some_administrator))
 

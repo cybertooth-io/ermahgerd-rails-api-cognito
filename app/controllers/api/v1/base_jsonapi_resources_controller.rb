@@ -5,38 +5,41 @@ module Api
     # This is a JSONAPI-Resources ready controller that tests authentication using Ermahgerd::Authorizer concern.
     # Authorization is managed through Pundit policies.
     class BaseJsonapiResourcesController < ApplicationController
-      include Ermahgerd::CurrentUser
-      include JSONAPI::ActsAsResourceController
+      include Ermahgerd::AuthenticatedUser
       include Ermahgerd::Authorizer
+      include JSONAPI::ActsAsResourceController
       include Pundit # included for Posterity sake should we override a controller and need to `authorize`
 
-      # :authorize_request! is from the CognitoAuthorizer concern ensuring valid `authenticated` requests
+      # from the Ermahgerd::Authorizer concern ensuring valid `authenticated` requests
       before_action :authorize_request!
 
-      # got this far, let's record this request in the `SessionActivity` table
+      # from the Ermahgerd::AuthenticatedUser concern that ensures the authenticated user is in the database
+      before_action :assert_current_user!
+
+      # got this far, let's attempt record this request in the `SessionActivity` table
       before_action :record_session_activity
 
       private
 
-      # Using the setting in `config/application.rb` determine whether or not to record session activity
+      # Using the setting in `config/initializers/ermahgerd.rb` determine whether or not to record session activity
       def record_session_activity
         return unless Ermahgerd.configuration.record_session_activity
 
-        # TODO: we need to use the `jti` from the token
-        # TODO: See https://en.wikipedia.org/wiki/JSON_Web_Token#Standard_fields
-        # ruid = payload['ruid']
-        # session = Session.find_by!(ruid: ruid)
-        #
-        # if session.present?
-        #   return RecordSessionActivityWorker.perform_async(
-        #     Time.zone.now.iso8601,
-        #     request.remote_ip,
-        #     request.path,
-        #     session.id
-        #   )
-        # end
-        #
-        # Rails.logger.warn("Session with ruid of #{ruid} cannot be found.")
+        browser = Browser.new(request.headers['User-Agent'])
+
+        RecordSessionActivityWorker.perform_async(
+          browser.name,
+          browser.full_version,
+          Time.zone.now.iso8601,
+          browser.device.name,
+          request.remote_ip,
+          Time.zone.at(access_token[:iat]).iso8601,
+          access_token[:jti],
+          request.path,
+          browser.platform.name,
+          browser.platform.version,
+          current_user.id
+        )
       end
     end
   end

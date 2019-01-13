@@ -12,6 +12,10 @@ AllCops:
 Metrics/AbcSize:
   Enabled: false
 
+Metrics/BlockLength:
+  Exclude:
+    - test/**/*
+
 Metrics/LineLength:
   Exclude:
     - test/**/*
@@ -19,6 +23,10 @@ Metrics/LineLength:
 
 Metrics/MethodLength:
   Max: 30
+
+Metrics/ParameterLists:
+  Exclude:
+    - app/workers/**/*
 
 Rails:
   Enabled: true

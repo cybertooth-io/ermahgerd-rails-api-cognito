@@ -8,15 +8,20 @@ module Ermahgerd
   #
   # There is nothing stopping an implementor from changing this to return a JSON representation
   # of this user that is stored inside the JWT access token.
-  module CurrentUser
+  module AuthenticatedUser
     extend ActiveSupport::Concern
     included do
       private
 
+      # See https://github.com/cybertooth-io/ermahgerd-rails-api-cognito/issues/10
+      def assert_current_user!
+        raise ActiveRecord::RecordNotFound, 'Authenticated user not found in API server' if current_user.nil?
+      end
+
       # The current_user can be found from the email address in the token payloard
       # Eagerly load the user's roles so they can be discriminated against
       def current_user
-        @current_user ||= User.includes(:roles).find_by(email: id_token[:email])
+        @current_user ||= CurrentUser.includes(:roles).find_by(email: id_token[:email])
       end
 
       # In JSONAPI the `context` function returns a hash that is available at every lifecycle moments in the JSONAPI

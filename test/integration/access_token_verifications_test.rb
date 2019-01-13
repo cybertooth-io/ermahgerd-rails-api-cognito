@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-class AccessTokenVerificationsControllerTest < ActionDispatch::IntegrationTest
+class AccessTokenVerificationsTest < ActionDispatch::IntegrationTest
   test 'when access token is not supplied' do
     headers = auth(users(:some_administrator))
 

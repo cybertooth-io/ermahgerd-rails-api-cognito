@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
   # Sidekiq Console
   # RTFM: https://github.com/mperham/sidekiq/wiki/Monitoring#rails
-  # require 'sidekiq/web'
-  # mount Sidekiq::Web => '/sidekiq'
+  mount Sidekiq::Web => '/sidekiq'
 
   post '/cookie/login', to: 'cookie_authentications#create'
   delete '/cookie/logout', to: 'cookie_authentications#destroy'

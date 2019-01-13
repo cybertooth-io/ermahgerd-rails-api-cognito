@@ -1,8 +1,9 @@
 sterling_archer_session:
   browser: Internet Exploder
   browser_version: 6
-  device: 'Unknown'
+  device: Unknown
   ip_address: 1.2.3.4
-  platform: 'Windows XP'
-  platform_version: '5.1.2600'
+  jti: aaaaaa-bbbb-cccccccc-dddd
+  platform: Windows XP
+  platform_version: 5.1.2600
   user: sterling_archer

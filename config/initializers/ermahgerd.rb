@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Refer to `lib/ermahgerd/configuration.rb` `initialize` method to view the configuration defaults.
 Ermahgerd.configure do |config|
   if Rails.env.test?
     # Cognito Token Verification Configuration

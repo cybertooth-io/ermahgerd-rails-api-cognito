@@ -2,7 +2,7 @@
 
 require 'ermahgerd/authorizer'
 require 'ermahgerd/configuration'
-require 'ermahgerd/current_user'
+require 'ermahgerd/authenticated_user'
 require 'ermahgerd/errors'
 
 # The Ermahgerd module has a bunch of constants and configuration elements found within.

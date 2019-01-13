@@ -1,35 +1,20 @@
 sterling_archer:
   email: sterling@isiservice.com
-  first_name: Sterling
-  last_name: Archer
-  nickname: Duchess
   roles: [guest]
 
 mallory_archer:
   email: mallory@isiservice.com
-  first_name: Mallory
-  last_name: Archer
-  nickname:
   roles: [guest]
 
 some_administrator:
   email: admin@pundit.com
-  first_name: Some
-  last_name: Admin
-  nickname:
   roles: [administrator]
 
 some_other_administrator:
   email: other-admin@pundit.com
-  first_name: Other
-  last_name: Admin
-  nickname:
   roles: [administrator]
 
 some_guest:
   email: guest@pundit.com
-  first_name: Some
-  last_name: Guest
-  nickname:
   roles: [guest]
 

@@ -27,6 +27,8 @@ module Api
       # ----------------------------------------------------------------------------------------------------------------
 
       def self.find_by_key(_key, options = {})
+        # TODO: interestingly enough; the `CurrentUser` model instance is what is stored in the context
+        # TODO: for some reason just returning it will not work
         context = options[:context]
         new(CurrentUser.find_by(id: context[:current_user].id), context)
       end
