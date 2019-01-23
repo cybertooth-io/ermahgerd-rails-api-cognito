@@ -70,10 +70,10 @@ module ActiveSupport
     def access_payload(now_in_seconds, user, iss)
       {
         "auth_time": now_in_seconds,
+        "device_key": 'ca-central-1_vvvvvvvv-wwww-xxxx-yyyy-zzzzzzzzzzzz',
         "exp": now_in_seconds + 3600, # expires in an hour
         "iat": now_in_seconds,
         "iss": iss,
-        "jti": 'ffffffff-gggg-hhhh-iiii-jjjjjjjjjjjj',
         "scope": 'aws.cognito.signin.user.admin',
         "sub": 'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee',
         "token_use": 'access',

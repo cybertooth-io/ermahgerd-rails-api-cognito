@@ -56,8 +56,8 @@ en:
         browser: Browser Name
         browser_version: Browser Version
         device: Device Name
+        device_key: Unique Device Session Key
         ip_address: Login IP Address
-        jti: JSON Web Token Identifier
         platform: Platform
         platform_version: Platform Version
         updated_at: Updated On

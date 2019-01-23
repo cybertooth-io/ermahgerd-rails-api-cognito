@@ -4,22 +4,22 @@
 class RecordSessionActivityWorker
   include Sidekiq::Worker
 
-  def perform(browser, browser_version, created_at_iso8601, device, ip_address, issued_at_iso8601, jti, path, platform,
-              platform_version, user_id)
-    session = Session.find_by(jti: jti)
+  def perform(browser, browser_version, created_at_iso8601, device, device_key, ip_address, auth_time_iso8601, path,
+              platform, platform_version, user_id)
+    authenticated_at = Time.zone.parse(auth_time_iso8601)
+    session = Session.find_by(authenticated_at: authenticated_at, device_key: device_key)
 
     ActiveRecord::Base.transaction do
       if session.nil?
         session = Session.create!(
+          authenticated_at: authenticated_at,
           browser: browser,
           browser_version: browser_version,
-          created_at: Time.zone.parse(issued_at_iso8601),
           device: device,
+          device_key: device_key,
           ip_address: ip_address,
-          jti: jti,
           platform: platform,
           platform_version: platform_version,
-          updated_at: Time.zone.parse(issued_at_iso8601),
           user_id: user_id
         )
       end

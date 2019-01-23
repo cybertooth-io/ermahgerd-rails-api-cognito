@@ -65,11 +65,12 @@ class AccessTokenVerificationsTest < ActionDispatch::IntegrationTest
     assert_equal 'ACCESS token claim is invalid', JSON.parse(response.body)['errors'].first['detail']
   end
 
-  test 'when the access token is missing the jti claim' do
+  test 'when the access token is missing the device_key claim' do
     some_administrator = users(:some_administrator)
     headers = auth(some_administrator)
 
-    payload = access_payload(Time.zone.now.to_i, some_administrator, Ermahgerd.configuration.token_iss).except!(:jti)
+    payload = access_payload(Time.zone.now.to_i, some_administrator, Ermahgerd.configuration.token_iss)
+              .except!(:device_key)
     headers[Ermahgerd::HEADER_AUTHORIZATION] = "Bearer #{sign_access_token(payload)}"
 
     get api_v1_roles_url, headers: headers

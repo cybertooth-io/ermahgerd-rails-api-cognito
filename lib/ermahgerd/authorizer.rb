@@ -90,13 +90,13 @@ module Ermahgerd
         token
       end
 
-      # Raises Ermahgerd::Errors::ClaimsVerification if the ACCESS token is missing :jti claim.  Also raised
-      # if the :iss claim is not what is configured in the app.
+      # Raises Ermahgerd::Errors::ClaimsVerification if the ACCESS token is missing the :auth_time and :device_key
+      # claim.  Also raised if the :iss claim is not what is configured in the app.
       # @see Ermahgerd.configuration.token_iss
       def verify_access_token!
         raise Ermahgerd::Errors::ClaimsVerification, 'ACCESS token claim is invalid' unless
-          access_token[:iss] == Ermahgerd.configuration.token_iss &&
-          access_token[:jti].present?
+          access_token[:iss] == Ermahgerd.configuration.token_iss && access_token[:device_key].present? &&
+          access_token[:auth_time].present?
       end
 
       # Raises Ermahgerd::Errors::ClaimsVerification if the ID token is missing :email or :sub claims.  Also raised

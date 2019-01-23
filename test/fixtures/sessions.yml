@@ -1,9 +1,10 @@
 sterling_archer_session:
+  authenticated_at: <%= -5.minutes.from_now %>
   browser: Internet Exploder
   browser_version: 6
   device: Unknown
+  device_key: uu-region-#_vvvvvvvv-wwww-xxxx-yyyy-zzzzzzzzzzzz
   ip_address: 1.2.3.4
-  jti: aaaaaa-bbbb-cccccccc-dddd
   platform: Windows XP
   platform_version: 5.1.2600
   user: sterling_archer

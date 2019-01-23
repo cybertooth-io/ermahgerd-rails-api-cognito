@@ -5,7 +5,7 @@ class Session < ApplicationRecord
   # Ignore Removed Columns
   # --------------------------------------------------------------------------------------------------------------------
 
-  self.ignored_columns = %w[expiring_at invalidated invalidated_by_id ruid]
+  self.ignored_columns = %w[expiring_at invalidated invalidated_by_id jti ruid]
 
   # Auto-Strip
   # --------------------------------------------------------------------------------------------------------------------
@@ -22,11 +22,12 @@ class Session < ApplicationRecord
   # --------------------------------------------------------------------------------------------------------------------
 
   validates(
+    :authenticated_at,
     :browser,
     :browser_version,
     :device,
+    :device_key,
     :ip_address,
-    :jti,
     :platform,
     :platform_version,
     :user,

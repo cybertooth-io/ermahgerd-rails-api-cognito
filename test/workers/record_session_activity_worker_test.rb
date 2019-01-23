@@ -10,9 +10,9 @@ class RecordSessionActivityWorkerTest < ActiveSupport::TestCase
         'someBrowserVersion',
         -10.seconds.from_now.iso8601,
         'device',
+        'ca-central-1_vvvvvvvv-wwww-xxxx-yyyy-zzzzzzzzzzzz',
         '1.2.3.4',
         -60.seconds.from_now.iso8601,
-        'someJTI',
         '/some/path/2/nowhere',
         'somePlatform',
         'somePlatformVersion',
@@ -22,18 +22,7 @@ class RecordSessionActivityWorkerTest < ActiveSupport::TestCase
   end
 
   test 'when session already exists, just the activity is created' do
-    # first create the session
-    Session.create!(
-      browser: 'someBrowser',
-      browser_version: 'someBrowserVersion',
-      created_at: -60.seconds.from_now.iso8601,
-      device: 'device',
-      ip_address: '1.2.3.4',
-      jti: 'someJTI',
-      platform: 'somePlatform',
-      platform_version: 'somePlatformVersion',
-      user_id: users(:some_administrator).id
-    )
+    session = sessions(:sterling_archer_session)
 
     assert_difference ['SessionActivity.count'] do
       assert_no_difference ['Session.count'] do
@@ -42,9 +31,9 @@ class RecordSessionActivityWorkerTest < ActiveSupport::TestCase
           'someBrowserVersion',
           -10.seconds.from_now.iso8601,
           'device',
+          session.device_key, # already found in sessions.yml
           '1.2.3.4',
-          -60.seconds.from_now.iso8601,
-          'someJTI',
+          session.authenticated_at.iso8601,
           '/some/path/2/nowhere',
           'somePlatform',
           'somePlatformVersion',
