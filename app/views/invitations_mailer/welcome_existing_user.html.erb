@@ -1,0 +1,21 @@
+<div class="container">
+
+  <h1>Welcome Back To Ermahgerd!</h1>
+
+  <p>
+    Your account has been configured. Your email address
+    (<strong><%= @hash[:user].email -%></strong>) is what you will use to sign into to the site.
+  </p>
+
+  <p>
+    <a href="<%= Ermahgerd.configuration.client_sign_in_url -%>">
+      Follow this link to sign in.
+    </a>
+  </p>
+
+  <p>
+    <a href="<%= Ermahgerd.configuration.client_forgot_password_url -%>">
+      Use this link if you have forgotten your password.
+    </a>
+  </p>
+</div>

@@ -4,8 +4,8 @@
 class RecordSessionActivityWorker
   include Sidekiq::Worker
 
-  def perform(browser, browser_version, created_at_iso8601, device, device_key, ip_address, auth_time_iso8601, path,
-              platform, platform_version, user_id)
+  def perform(browser, browser_version, created_at_iso8601, device, device_key, ip_address, auth_time_iso8601,
+              path, platform, platform_version, user_id, jti)
     authenticated_at = Time.zone.parse(auth_time_iso8601)
     session = Session.find_by(authenticated_at: authenticated_at, device_key: device_key)
 
@@ -27,6 +27,7 @@ class RecordSessionActivityWorker
       SessionActivity.create!(
         created_at: Time.zone.parse(created_at_iso8601),
         ip_address: ip_address,
+        jti: jti,
         path: path,
         session_id: session.id
       )

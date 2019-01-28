@@ -73,6 +73,11 @@ en:
       user:
         created_at: Created On
         email: Email Address
+        # given_name is a virtual attribute
+        given_name: Given Name
+        # family_name is a virtual attribute
+        family_name: Family Name
+        in_cognito: User Created In Cognito?
         roles: Roles
         sessions: Sessions
         updated_at: Updated On
@@ -103,8 +108,12 @@ en:
   # --------------------------------------------------------------------------------------------------------------------
 
   invitations_mailer:
+    activate_new_account:
+      subject: '[Ermahgerd] Welcome To Ermahgerd - Activate Your Account'
     set_password:
       subject: Invitation - Set Your Password
+    welcome_existing_user:
+      subject: '[Ermahgerd] Welcome Back To Ermahgerd - Account Configured'
 
   # Error Messages
   # --------------------------------------------------------------------------------------------------------------------
@@ -112,8 +121,8 @@ en:
   # feel free to add to the `errors.messages.*` pile that ships with Rails
   # https://github.com/rails/rails/blob/master/activemodel/lib/active_model/locale/en.yml
   # https://github.com/rails/rails/blob/master/activerecord/lib/active_record/locale/en.yml
-  errors:
-    messages:
+  #errors:
+  #  messages:
 
   # Pundit message customization
   # --------------------------------------------------------------------------------------------------------------------

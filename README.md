@@ -110,6 +110,12 @@ If you're forking this or trying it yourself, you'll want to:
 $ rails credentials:edit  # you might have to destroy the existing `config/credentials.yml.enc` if this command fails
 ```
 
+`aws:access_key_id` - the access key used to interface with S3, Cognito, etc.
+
+`aws:secret_access_key` - the secret access key used to interface with S3, Cognito, etc.
+
+`aws:region` - the default region that all AWS Client connections will be directed to.
+
 `secret_key_base` - used by most Rails apps in one way or another (e.g. BCrypt).  Please set this to a
 strong key; all environments (development, test, etc.) require this to be set.
 
@@ -131,6 +137,30 @@ or the payloads from your authentication requests to Cognito.  By default, the T
 not use this setting; it makes up a fake audience value.  DEVELOPMENT & PRODUCTION do use this unless
 you change the configuration through `config/initializers/ermahgerd.rb`.
 
+#### Example File Contents
+
+```yaml
+# AWS client credentials for S3, Cognito, etc.
+aws:
+  access_key_id: xxxxxxxxxxxxxxxxxxxx
+  secret_access_key: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  region: xx-region-x
+  cognito:
+    # Used by operations of the Aws::CognitoIdentityProvider::Client; the Pool ID (found in the Cognito web console)
+    user_pool_id: ca-central-1_ocRK2nsIR
+
+# Used as the base secret for all MessageVerifiers in Rails, including the one protecting cookies.
+secret_key_base: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ 
+# the jwk_set from AWS Cognito: see https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-tokens-verifying-a-jwt.html#amazon-cognito-user-pools-using-tokens-step-2
+jwk_set: '...'
+
+# the token's AUDience that is verified during authentication; also known as the App Client ID (check out Cognito web console)
+token_aud: xxxxxxxxxxxxxxxxxxxxxxxxxx
+
+# the token's ISSuer url; again verified during authentication
+token_iss: https://cognito-idp.xx-region-x.amazonaws.com/xx-region-x_xxxxxxxxx
+```
 ----
 
 ## Releasing

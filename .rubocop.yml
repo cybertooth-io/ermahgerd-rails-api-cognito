@@ -16,6 +16,10 @@ Metrics/BlockLength:
   Exclude:
     - test/**/*
 
+Metrics/ClassLength:
+  Exclude:
+    - test/**/*
+
 Metrics/LineLength:
   Exclude:
     - test/**/*

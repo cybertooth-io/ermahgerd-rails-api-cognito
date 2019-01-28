@@ -16,7 +16,8 @@ class RecordSessionActivityWorkerTest < ActiveSupport::TestCase
         '/some/path/2/nowhere',
         'somePlatform',
         'somePlatformVersion',
-        users(:some_administrator).id
+        users(:some_administrator).id,
+        'vvvvvvvv-wwww-xxxx-yyyy-zzzzzzzzzzzz'
       )
     end
   end
@@ -37,7 +38,8 @@ class RecordSessionActivityWorkerTest < ActiveSupport::TestCase
           '/some/path/2/nowhere',
           'somePlatform',
           'somePlatformVersion',
-          users(:some_administrator).id
+          users(:some_administrator).id,
+          'vvvvvvvv-wwww-xxxx-yyyy-zzzzzzzzzzzz'
         )
       end
     end

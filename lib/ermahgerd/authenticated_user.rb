@@ -28,7 +28,7 @@ module Ermahgerd
       # implementation.  For Pundit in particular, it needs the current_user in order to authorize access to
       # controller actions.
       def context
-        { current_user: current_user }
+        { controller: self, current_user: current_user }
       end
     end
   end

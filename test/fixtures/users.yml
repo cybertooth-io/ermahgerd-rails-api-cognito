@@ -1,20 +1,25 @@
 sterling_archer:
   email: sterling@isiservice.com
+  in_cognito: true
   roles: [guest]
 
 mallory_archer:
   email: mallory@isiservice.com
+  in_cognito: true
   roles: [guest]
 
 some_administrator:
   email: admin@pundit.com
+  in_cognito: true
   roles: [administrator]
 
 some_other_administrator:
   email: other-admin@pundit.com
+  in_cognito: false
   roles: [administrator]
 
 some_guest:
   email: guest@pundit.com
+  in_cognito: false
   roles: [guest]
 

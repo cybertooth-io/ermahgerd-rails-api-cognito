@@ -4,6 +4,8 @@ sterling_archer_session:
   browser_version: 6
   device: Unknown
   device_key: uu-region-#_vvvvvvvv-wwww-xxxx-yyyy-zzzzzzzzzzzz
+  invalidated_at:
+  invalidated_by:
   ip_address: 1.2.3.4
   platform: Windows XP
   platform_version: 5.1.2600

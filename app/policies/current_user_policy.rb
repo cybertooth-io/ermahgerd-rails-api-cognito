@@ -7,6 +7,10 @@ class CurrentUserPolicy < ApplicationPolicy
     user.id == record.id
   end
 
+  def sign_out?
+    show?
+  end
+
   def update?
     create?
   end

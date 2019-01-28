@@ -4,6 +4,8 @@
 class User < ApplicationRecord
   audited
 
+  COGNITO = Aws::CognitoIdentityProvider::Client.new(stub_responses: Rails.env.test?).freeze
+
   # Ignore Removed Columns
   # --------------------------------------------------------------------------------------------------------------------
 
@@ -12,6 +14,7 @@ class User < ApplicationRecord
   # Callbacks
   # --------------------------------------------------------------------------------------------------------------------
 
+  # HABTM doesn't support `dependent: :destroy` so you have to do this manually
   before_destroy do
     roles.clear
   end
@@ -29,6 +32,8 @@ class User < ApplicationRecord
   validates :email, uniqueness: true
 
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
+
+  validates :in_cognito, inclusion: { in: [true, false] }
 
   # Relationships
   # --------------------------------------------------------------------------------------------------------------------

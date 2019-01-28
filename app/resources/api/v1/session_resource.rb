@@ -14,6 +14,7 @@ module Api
         :browser,
         :browser_version,
         :device,
+        :invalidated_at,
         :ip_address,
         :platform,
         :platform_version,
@@ -32,6 +33,8 @@ module Api
 
       # Relationships
       # ----------------------------------------------------------------------------------------------------------------
+
+      has_one :invalidated_by
 
       has_many :session_activities
 

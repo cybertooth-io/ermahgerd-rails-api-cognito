@@ -1,0 +1,5 @@
+Welcome To Ermahgerd!
+
+Your account has been created. You will need to activate this account with your email address `<%= @hash[:user].email -%>`, and this temporary password <%= @hash[:temporary_password] %>
+
+Follow this link to use your temporary password to activate your account: <%= Ermahgerd.configuration.client_activate_url %>

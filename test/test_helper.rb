@@ -13,8 +13,16 @@ module ActiveSupport
 
     USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/601.3.9 (KHTML, like Gecko) Version/9.0.2 Safari/601.3.9'
 
-    # Set up fake Sidekiq queuing (see https://github.com/mperham/sidekiq/wiki/Testing#testing-worker-queueing-fake)
+    # Set up fake Sidekiq queuing
+    # @see https://github.com/mperham/sidekiq/wiki/Testing#testing-worker-queueing-fake
     Sidekiq::Testing.fake!
+
+    # Tell any AWS SDK calls to not make the network request; stub them instead
+    # @see https://aws.amazon.com/blogs/developer/client-response-stubs/
+    Aws.config[:stub_responses] = true
+
+    setup do
+    end
 
     # Return time back to normal after each test case
     teardown do

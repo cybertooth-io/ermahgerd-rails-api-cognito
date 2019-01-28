@@ -1,0 +1,16 @@
+<div class="container">
+
+  <h1>Welcome To Ermahgerd!</h1>
+
+  <p class="mb-3">
+    Your account has been created. You will need to activate this account with your email address
+    <strong><%= @hash[:user].email -%></strong>, and this temporary password
+    <strong><%= @hash[:temporary_password] %></strong>.
+  </p>
+
+  <p class="mb-3">
+    <a href="<%= Ermahgerd.configuration.client_activate_url -%>">
+      Follow this link to use your temporary password to activate your account.
+    </a>
+  </p>
+</div>

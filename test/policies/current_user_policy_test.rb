@@ -3,13 +3,45 @@
 require 'test_helper'
 
 class CurrentUserPolicyTest < ActiveSupport::TestCase
-  def test_scope; end
+  test 'when create' do
+    assert_not CurrentUserPolicy.new(users(:some_administrator), User).create?
+    assert_not CurrentUserPolicy.new(users(:some_guest), User).create?
+  end
 
-  def test_show; end
+  test 'when destroy' do
+    assert_not CurrentUserPolicy.new(users(:some_administrator), users(:sterling_archer)).destroy?
+    assert_not CurrentUserPolicy.new(users(:some_guest), users(:sterling_archer)).destroy?
+  end
 
-  def test_create; end
+  test 'when index' do
+    assert_not CurrentUserPolicy.new(users(:some_administrator), User).index?
+    assert_not CurrentUserPolicy.new(users(:some_guest), User).index?
+  end
 
-  def test_update; end
+  test 'when show' do
+    assert_not CurrentUserPolicy.new(users(:some_administrator), users(:sterling_archer)).show?
+    assert_not CurrentUserPolicy.new(users(:some_guest), users(:sterling_archer)).show?
+  end
 
-  def test_destroy; end
+  test 'when showing me' do
+    assert CurrentUserPolicy.new(users(:some_guest), users(:some_guest)).show?
+  end
+
+  test 'when sign out' do
+    assert_not CurrentUserPolicy.new(users(:some_administrator), users(:sterling_archer)).sign_out?
+    assert_not CurrentUserPolicy.new(users(:some_guest), users(:sterling_archer)).sign_out?
+  end
+
+  test 'when signing me out' do
+    assert CurrentUserPolicy.new(users(:some_guest), users(:some_guest)).sign_out?
+  end
+
+  test 'when update' do
+    assert_not CurrentUserPolicy.new(users(:some_administrator), users(:sterling_archer)).update?
+    assert_not CurrentUserPolicy.new(users(:some_guest), users(:sterling_archer)).update?
+  end
+
+  test 'when updating my user record' do
+    assert_not CurrentUserPolicy.new(users(:some_guest), users(:some_guest)).update?
+  end
 end

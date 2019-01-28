@@ -7,6 +7,8 @@ module Api
     class CurrentUserResource < JSONAPI::Resource
       include JSONAPI::Authorization::PunditScopedResource
 
+      immutable # no CUD through controller
+
       # Attributes
       # ----------------------------------------------------------------------------------------------------------------
 

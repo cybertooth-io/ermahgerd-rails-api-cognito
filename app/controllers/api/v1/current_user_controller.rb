@@ -5,18 +5,14 @@ module Api
     # The current user controller is bound as a SINGULAR route (no index).
     # After a successful `show` action has resulted we will spin up a session job
     class CurrentUserController < BaseJsonapiResourcesController
-      after_action :create_session, only: [:show]
+      def sign_out
+        InvalidateSessionWorker.perform_async(
+          current_user.id,
+          Time.zone.now.iso8601,
+          access_token[:jti]
+        )
 
-      # Simply declaring this action because Rubocop wanted it here because the `after_action` uses it on its `only`
-      def show
-        super
-      end
-
-      private
-
-      def create_session
-        # record `Session` information here (including browser, etc.)
-        # TODO
+        render json: {}, status: :no_content
       end
     end
   end

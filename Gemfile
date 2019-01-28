@@ -66,6 +66,8 @@ gem 'paperclip', '~> 6.1'
 # add the aws-sdk for storing images in S3
 gem 'aws-sdk', '~> 3.0'
 
+gem 'aws-sdk-rails', '~> 2.0'
+
 # Use postgres database
 gem 'pg', '~> 1.1'
 

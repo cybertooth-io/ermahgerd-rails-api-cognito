@@ -10,11 +10,16 @@ module Api
       # Callbacks
       # ----------------------------------------------------------------------------------------------------------------
 
+      after_create do
+        CreateCognitoUserWorker.perform_async(@model.id) if context[:controller].action_name == 'create'
+      end
+
       # Attributes
       # ----------------------------------------------------------------------------------------------------------------
 
       attributes(
         :email,
+        :in_cognito,
         {}
       )
 

@@ -26,4 +26,6 @@ class SessionActivity < ApplicationRecord
 
   # Scopes
   # --------------------------------------------------------------------------------------------------------------------
+
+  scope :by_jti, ->(jti) { where(jti: jti) }
 end

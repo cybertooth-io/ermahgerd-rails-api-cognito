@@ -5,7 +5,7 @@ class Session < ApplicationRecord
   # Ignore Removed Columns
   # --------------------------------------------------------------------------------------------------------------------
 
-  self.ignored_columns = %w[expiring_at invalidated invalidated_by_id jti ruid]
+  self.ignored_columns = %w[expiring_at invalidated jti ruid]
 
   # Auto-Strip
   # --------------------------------------------------------------------------------------------------------------------
@@ -37,12 +37,16 @@ class Session < ApplicationRecord
   # Relationships
   # --------------------------------------------------------------------------------------------------------------------
 
-  belongs_to :user
+  belongs_to :invalidated_by, class_name: 'User', optional: true
+
+  belongs_to :user, touch: true
 
   has_many :session_activities, dependent: :destroy
 
   # Scopes
   # --------------------------------------------------------------------------------------------------------------------
+
+  scope :by_jti, ->(jti) { joins(:session_activities).merge(SessionActivity.by_jti(jti)) }
 
   scope :by_user, ->(ids) { where user_id: ids }
 end

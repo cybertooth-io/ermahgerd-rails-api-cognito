@@ -38,7 +38,8 @@ module Api
           request.path,
           browser.platform.name,
           browser.platform.version,
-          current_user.id
+          current_user.id,
+          access_token[:jti]
         )
       end
     end

@@ -25,6 +25,23 @@ module Api
         assert_response :created
       end
 
+      test 'when create fails because of a duplicate key' do
+        assert_no_difference ['Role.count'] do
+          post api_v1_roles_url, headers: auth(users(:some_administrator)), params: {
+            data: {
+              attributes: {
+                key: 'ADMIN',
+                name: 'Contributor'
+              },
+              type: 'roles'
+            }
+          }.to_json
+        end
+
+        assert_response :unprocessable_entity
+        assert_equal 'key - has already been taken', JSON.parse(response.body)['errors'].first['detail']
+      end
+
       test 'when create forbidden' do
         assert_no_difference ['Role.count'] do
           post api_v1_roles_url, headers: auth(users(:some_guest)), params: {
