@@ -73,10 +73,6 @@ en:
       user:
         created_at: Created On
         email: Email Address
-        # given_name is a virtual attribute
-        given_name: Given Name
-        # family_name is a virtual attribute
-        family_name: Family Name
         in_cognito: User Created In Cognito?
         roles: Roles
         sessions: Sessions
