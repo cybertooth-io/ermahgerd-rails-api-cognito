@@ -4,7 +4,7 @@ module Api
   module V1
     # Protected access to the `Session` model.
     class SessionResource < BaseResource
-      immutable # no CUD through controller
+      immutable # no CUD through controller except :invalidate (which is hand-coded)
 
       # Attributes
       # ----------------------------------------------------------------------------------------------------------------
@@ -14,6 +14,7 @@ module Api
         :browser,
         :browser_version,
         :device,
+        :expires_at,
         :invalidated_at,
         :ip_address,
         :platform,
@@ -35,6 +36,8 @@ module Api
       # ----------------------------------------------------------------------------------------------------------------
 
       has_one :invalidated_by
+
+      has_one :last_session_activity, foreign_key_on: :related
 
       has_many :session_activities
 

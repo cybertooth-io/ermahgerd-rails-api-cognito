@@ -4,6 +4,7 @@ sterling_archer_session:
   browser_version: 6
   device: Unknown
   device_key: uu-region-#_vvvvvvvv-wwww-xxxx-yyyy-zzzzzzzzzzzz
+  expires_at: <%= 30.days.from_now %>
   invalidated_at:
   invalidated_by:
   ip_address: 1.2.3.4

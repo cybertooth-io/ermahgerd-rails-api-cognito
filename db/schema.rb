@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_27_020834) do
+ActiveRecord::Schema.define(version: 2019_02_25_030945) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,6 +59,7 @@ ActiveRecord::Schema.define(version: 2019_01_27_020834) do
     t.string "path", null: false
     t.bigint "session_id", null: false
     t.string "jti", default: "FAKE_DEFAULT", null: false
+    t.string "access_token", null: false
     t.index ["session_id"], name: "index_session_activities_on_session_id"
   end
 
@@ -76,6 +77,7 @@ ActiveRecord::Schema.define(version: 2019_01_27_020834) do
     t.string "device_key", null: false
     t.datetime "invalidated_at"
     t.bigint "invalidated_by_id"
+    t.datetime "expires_at", null: false
     t.index ["authenticated_at", "device_key"], name: "index_sessions_on_authenticated_at_and_device_key", unique: true
     t.index ["invalidated_by_id"], name: "index_sessions_on_invalidated_by_id"
     t.index ["user_id"], name: "index_sessions_on_user_id"

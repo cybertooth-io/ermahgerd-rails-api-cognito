@@ -7,7 +7,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.5.1'
+ruby '2.5.3'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.1'
@@ -44,7 +44,7 @@ gem 'json-jwt'
 
 # Authorization
 # ----------------------------------------------------------------------------------------------------------------------
-gem 'jsonapi-authorization', '~> 1.0.0.beta2'
+gem 'jsonapi-authorization', '~> 1.0.0'
 
 # ----------------------------------------------------------------------------------------------------------------------
 gem 'jsonapi-resources', '~> 0.9'
@@ -63,10 +63,16 @@ gem 'scenic', '~> 1.4'
 # ----------------------------------------------------------------------------------------------------------------------
 
 gem 'paperclip', '~> 6.1'
-# add the aws-sdk for storing images in S3
-gem 'aws-sdk', '~> 3.0'
 
+# Amazon Web Services (AWS)
+# ----------------------------------------------------------------------------------------------------------------------
+
+# aws-sdk for Rails services (not used just yet...but can be for SES, etc.)
 gem 'aws-sdk-rails', '~> 2.0'
+
+# aws-sdk for Cognito interactions
+# @see https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/CognitoIdentityProvider/Client.html
+gem 'aws-sdk-cognitoidentityprovider', '~> 1'
 
 # Use postgres database
 gem 'pg', '~> 1.1'
@@ -101,8 +107,7 @@ gem 'slowpoke'
 
 gem 'bootstrap-email'
 # `sassc-rails` is required for Bootstrap 4 for email (https://github.com/sass/sassc-rails)
-# gem 'sassc-rails' # TODO: see https://github.com/stuyam/bootstrap-email/issues/23
-gem 'sass'
+gem 'sassc-rails'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

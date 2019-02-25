@@ -3,9 +3,12 @@
 require 'test_helper'
 
 class RecordSessionActivityWorkerTest < ActiveSupport::TestCase
-  test 'when session & session activity is successfully created' do
+  test 'when session and session activity is successfully created' do
+    User::COGNITO.stub_responses(:describe_user_pool_client)
+
     assert_difference ['Session.count', 'SessionActivity.count'] do
       RecordSessionActivityWorker.new.perform(
+        'xxxxx.yyyyy.zzzzz',
         'someBrowser',
         'someBrowserVersion',
         -10.seconds.from_now.iso8601,
@@ -28,6 +31,7 @@ class RecordSessionActivityWorkerTest < ActiveSupport::TestCase
     assert_difference ['SessionActivity.count'] do
       assert_no_difference ['Session.count'] do
         RecordSessionActivityWorker.new.perform(
+          'xxxxx.yyyyy.zzzzz',
           'someBrowser',
           'someBrowserVersion',
           -10.seconds.from_now.iso8601,

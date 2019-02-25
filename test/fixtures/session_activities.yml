@@ -1,4 +1,5 @@
 sterling_archer_session_activity:
+  access_token: xxxxx.yyyyy.zzzzz
   created_at: <%= -10.seconds.from_now %>
   ip_address: 1.2.3.4
   jti: vvvvvvvv-wwww-xxxx-yyyy-zzzzzzzzzzzz

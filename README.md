@@ -1,15 +1,19 @@
 # README  - ermahgerd-rails-api-cognito
          
-The Rails API server for Canadian Pump & Packing Distribution.  Serves up JSONAPI payloads for an EmberJs SPA
-over at [https://github.com/cybertooth-io/ccpdist-com-emberjs](https://github.com/cybertooth-io/ccpdist-com-emberjs).
+The Rails API server for the Ermahgerd Demo.  Serves up JSONAPI payloads, conveniently 
+consumed by an EmberJs Single Page Application using Ember-Data.
+
+The EmberJs demo application that talks to this API is found at:
+[https://github.com/cybertooth-io/ermahgerd-emberjs-cognito](https://github.com/cybertooth-io/ermahgerd-emberjs-cognito)
 
 ## Development - Getting Started
 
 You need the following:
 
-* Ruby-2.3+ - suggest Ruby-2.5 but check your production environment to be sure -- e.g. AWS EB
+* Ruby-2.3+ - this was however built with Ruby-2.5.x (latest).  Make sure to check your 
+production environment and match it (e.g. Amazon's Elastic Beanstalk)
 * Docker - we use two containers, one for the PostgreSQL database and one for Redis
-* The `config/master.key` file
+* A `config/master.key` file that we've given you or generate your own along with your _credentials_ (see below)
 
 ### First Time Setting Up
 
@@ -29,19 +33,27 @@ Perform the following from the command line:
 
 ### Database Seeds
 
-For development, feel free to edit the `db/fixtures/development/002_users.rb` file to add yourself.
-
 Seed the database with:
 
 ```bash
 $ rake db:seed_fu
 ```
 
+#### Seeding Administrator Users
+
+You need to create at least one Administrator in both this database and the corresponding user over in
+AWS Cognito.
+
+1. Feel free to edit the `db/fixtures/development/002_users.rb` file to a new user to the database
+1. Sign in to AWS Web Console and create a user in your pool that shares the same email address
+
+_Once one administrator has been created, you can create new users inside this app._
+
 ### Redis
 
 Redis is used by Sidekiq to queue up jobs.
 
-Sidekiq is configured in `config/initializers/sidekiq.rb` to use database `1`.
+Sidekiq is configured in `config/initializers/sidekiq.rb` to use database `0`.
 
 ### Crons/Jobs/Queues
 
@@ -92,17 +104,18 @@ initialize method.
 
 ## No Secrets Here - Credentials Instead
 
-As of Rails-5.2 secrets are hashed and locked down with the `config/master.key` file.  Run `rails credentials:help` for
-more information.
+As of Rails-5.2 secrets are hashed and locked down with the `config/master.key` file.  Run 
+`rails credentials:help` for more information.
 
-This application ships with an already created `config/credentials.yml.enc` and we share the `master.key` amongst
-ourselves ... but not with Joe Public (or Josephine Public)
+This application ships with an already created `config/credentials.yml.enc` and 
+we share the `master.key` amongst ourselves ... but not with Joe Public (or Josephine Public).
 
 If you're forking this or trying it yourself, you'll want to:
 
 1. `rm config/credentials.yml.enc` to get rid of the current credentials
-1. `rails credentials:edit`
-1. Add the keys that are described in the section below; don't forget to use the `rake secret` to create your keys
+1. `rails credentials:edit` to begin editing your credentials file
+1. Add the keys that are described in the section below.  Please leverage
+the `rake secret` tool to create your keys that you're placing into your credentials file.
 
 ### Keys in `config/credentials.yml.enc`
 
@@ -110,11 +123,47 @@ If you're forking this or trying it yourself, you'll want to:
 $ rails credentials:edit  # you might have to destroy the existing `config/credentials.yml.enc` if this command fails
 ```
 
+#### Example File Contents
+
+```yaml
+# AWS client credentials for S3, Cognito, etc.
+aws:
+  access_key_id: xxxxxxxxxxxxxxxxxxxx
+  secret_access_key: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  region: xx-region-x
+  cognito:
+    # Used by operations of the Aws::CognitoIdentityProvider::Client; 
+    # the Pool ID (found in the Cognito web console)
+    user_pool_id: xx-region-x_abcdefghi
+    # the CLIENT ID (there could be multiple, we may need to refactor this into an array)
+    client_id: abcdefghijklmnopqrstuvwxyz
+
+# Used as the base secret for all MessageVerifiers in Rails, including the one protecting cookies.
+secret_key_base: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ 
+# the jwk_set from AWS Cognito: see https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-tokens-verifying-a-jwt.html#amazon-cognito-user-pools-using-tokens-step-2
+jwk_set: '...'
+
+# the token's AUDience that is verified during authentication; also known as the App Client ID (check out Cognito web console)
+token_aud: xxxxxxxxxxxxxxxxxxxxxxxxxx
+
+# the token's ISSuer url; again verified during authentication
+token_iss: https://cognito-idp.xx-region-x.amazonaws.com/xx-region-x_xxxxxxxxx
+```
+
+#### Keys Explained
+
 `aws:access_key_id` - the access key used to interface with S3, Cognito, etc.
 
 `aws:secret_access_key` - the secret access key used to interface with S3, Cognito, etc.
 
 `aws:region` - the default region that all AWS Client connections will be directed to.
+
+`aws:cognito:user_pool_id` - this is your AWS Cognito's User Pool Id; looks something like: `xx-region-x_abcdefghi`
+
+`aws:cognito:client_id` - this your AWS Cognito's Client Id, it's 26 characters long: 
+e.g. `abcdefghijklmnopqrstuvwxyz`.  **There's a possibility that your pool has multiple clients
+interacting with this API, server as such this key may need to be refactored.** 
 
 `secret_key_base` - used by most Rails apps in one way or another (e.g. BCrypt).  Please set this to a
 strong key; all environments (development, test, etc.) require this to be set.
@@ -131,36 +180,11 @@ from your authentication requests to Cognito.  By default, the TEST environment 
 not use this setting; it makes up a fake audience value.  DEVELOPMENT & PRODUCTION do use this unless
 you change the configuration through `config/initializers/ermahgerd.rb`.
 
-
 `token_iss` - the url that issued the token.  You can get this information from your Cognito configuration 
 or the payloads from your authentication requests to Cognito.  By default, the TEST environment of this app does 
 not use this setting; it makes up a fake audience value.  DEVELOPMENT & PRODUCTION do use this unless
 you change the configuration through `config/initializers/ermahgerd.rb`.
 
-#### Example File Contents
-
-```yaml
-# AWS client credentials for S3, Cognito, etc.
-aws:
-  access_key_id: xxxxxxxxxxxxxxxxxxxx
-  secret_access_key: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-  region: xx-region-x
-  cognito:
-    # Used by operations of the Aws::CognitoIdentityProvider::Client; the Pool ID (found in the Cognito web console)
-    user_pool_id: ca-central-1_ocRK2nsIR
-
-# Used as the base secret for all MessageVerifiers in Rails, including the one protecting cookies.
-secret_key_base: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
- 
-# the jwk_set from AWS Cognito: see https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-tokens-verifying-a-jwt.html#amazon-cognito-user-pools-using-tokens-step-2
-jwk_set: '...'
-
-# the token's AUDience that is verified during authentication; also known as the App Client ID (check out Cognito web console)
-token_aud: xxxxxxxxxxxxxxxxxxxxxxxxxx
-
-# the token's ISSuer url; again verified during authentication
-token_iss: https://cognito-idp.xx-region-x.amazonaws.com/xx-region-x_xxxxxxxxx
-```
 ----
 
 ## Releasing

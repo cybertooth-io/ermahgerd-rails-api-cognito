@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# WhyTF does Rubocop insist I put a comment here, but not on my other classes.  FML.
+# The Ermahgerd namespace.
 module Ermahgerd
   # The default configuration object for the Ermahgerd AWS Cognito project.
   class Configuration

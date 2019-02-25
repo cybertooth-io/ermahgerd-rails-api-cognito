@@ -32,9 +32,9 @@ class Role < ApplicationRecord
   # Relationships
   # --------------------------------------------------------------------------------------------------------------------
 
-  # rubocop:disable Rails/HasAndBelongsToMany
-  has_and_belongs_to_many :users
-  # rubocop:enable Rails/HasAndBelongsToMany
+  has_many :roles_users, dependent: :destroy
+
+  has_many :users, through: :roles_users
 
   # Scopes
   # --------------------------------------------------------------------------------------------------------------------

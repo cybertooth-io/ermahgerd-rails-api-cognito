@@ -8,6 +8,10 @@ class SessionPolicy < ApplicationPolicy
     true
   end
 
+  def invalidate?
+    show?
+  end
+
   # Any administrator can show any session.
   # Others will only be able to show sessions that are bound to their user account.
   def show?

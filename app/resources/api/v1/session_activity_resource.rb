@@ -13,6 +13,8 @@ module Api
       attributes(
         :ip_address,
         :path,
+        # do not serialize the jti
+        # do not serialize the access_token
         {}
       )
 
@@ -21,7 +23,7 @@ module Api
         [] # immutable
       end
 
-      def self.fetchable_fields(_context)
+      def fetchable_fields
         super - [:updated_at]
       end
 

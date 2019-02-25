@@ -5,8 +5,8 @@ module Api
     # This is a JSONAPI-Resources ready controller that tests authentication using Ermahgerd::Authorizer concern.
     # Authorization is managed through Pundit policies.
     class BaseJsonapiResourcesController < ApplicationController
-      include Ermahgerd::AuthenticatedUser
-      include Ermahgerd::Authorizer
+      include Ermahgerd::Controllers::Concerns::AuthenticatedUser
+      include Ermahgerd::Controllers::Concerns::Authorizer
       include JSONAPI::ActsAsResourceController
       include Pundit # included for Posterity sake should we override a controller and need to `authorize`
 
@@ -28,6 +28,7 @@ module Api
         browser = Browser.new(request.headers['User-Agent'])
 
         RecordSessionActivityWorker.perform_async(
+          authorization_from_header!,
           browser.name,
           browser.full_version,
           Time.zone.now.iso8601,

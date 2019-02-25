@@ -13,7 +13,10 @@ class SessionActivity < ApplicationRecord
   # --------------------------------------------------------------------------------------------------------------------
 
   validates(
+    :access_token,
+    :created_at,
     :ip_address,
+    :jti,
     :path,
     :session,
     presence: true

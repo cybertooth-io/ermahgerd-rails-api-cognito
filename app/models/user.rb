@@ -38,9 +38,9 @@ class User < ApplicationRecord
   # Relationships
   # --------------------------------------------------------------------------------------------------------------------
 
-  # rubocop:disable Rails/HasAndBelongsToMany
-  has_and_belongs_to_many :roles
-  # rubocop:enable Rails/HasAndBelongsToMany
+  has_many :roles_users, dependent: :destroy
+
+  has_many :roles, through: :roles_users
 
   has_many :sessions, dependent: :restrict_with_error
 

@@ -18,12 +18,21 @@ class SessionPolicyTest < ActiveSupport::TestCase
     assert SessionPolicy.new(users(:some_guest), Session).index?
   end
 
+  test 'when invalidate' do
+    assert SessionPolicy.new(users(:some_administrator), sessions(:sterling_archer_session)).invalidate?
+    assert_not SessionPolicy.new(users(:some_guest), sessions(:sterling_archer_session)).invalidate?
+  end
+
+  test 'when invalidate mine' do
+    assert SessionPolicy.new(users(:sterling_archer), sessions(:sterling_archer_session)).invalidate?
+  end
+
   test 'when show' do
     assert SessionPolicy.new(users(:some_administrator), sessions(:sterling_archer_session)).show?
     assert_not SessionPolicy.new(users(:some_guest), sessions(:sterling_archer_session)).show?
   end
 
-  test 'when showing my user record' do
+  test 'when showing mine' do
     assert SessionPolicy.new(users(:sterling_archer), sessions(:sterling_archer_session)).show?
   end
 
