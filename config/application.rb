@@ -41,6 +41,6 @@ module ErmahgerdRailsApiCognito
     # Ermahgerd Configuration
     # ------------------------------------------------------------------------------------------------------------------
 
-    config.version = '0.0.1-rc.1'
+    config.version = '0.0.1'
   end
 end
