@@ -11,14 +11,6 @@ class User < ApplicationRecord
 
   self.ignored_columns = %w[first_name last_name nickname password_digest]
 
-  # Callbacks
-  # --------------------------------------------------------------------------------------------------------------------
-
-  # HABTM doesn't support `dependent: :destroy` so you have to do this manually
-  before_destroy do
-    roles.clear
-  end
-
   # Auto-Strip
   # --------------------------------------------------------------------------------------------------------------------
 
