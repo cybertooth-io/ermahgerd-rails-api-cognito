@@ -10,8 +10,7 @@ The EmberJs demo application that talks to this API is found at:
 
 You need the following:
 
-* Ruby-2.3+ - this was however built with Ruby-2.5.x (latest).  Make sure to check your 
-production environment and match it (e.g. Amazon's Elastic Beanstalk)
+* Ruby-2.6.x Make sure your production environment matches (e.g. Amazon's Elastic Beanstalk)
 * Docker - we use two containers, one for the PostgreSQL database and one for Redis
 * A `config/master.key` file that we've given you or generate your own along with your _credentials_ (see below)
 
@@ -63,9 +62,11 @@ If you're creating Sidekiq jobs please use the generator: `rails g sidekiq:worke
 
 1. Create a model with its **singular name**: `rails g model role key:string name:string notes:text`
     1. Edit the migration to ensure the `default` and `null` values are defined
-    1. Add validations, relationships, scopes, etc. to the new model class
+    1. Add auto_strip_attributes, validations, relationships, scopes, etc. to the new model class
+        * Make sure to declare your relationships on the inverse model as needed.
     1. Is the model audited?  Yes, then add the `audited` declaration to the model class
     1. Add test fixture data accordingly to `test/fixtures/*.yml` (keep it general and un-crazy)
+    1. Define any scopes that you may require
     1. Unit test accordingly
     1. Add the model information to the `config/locales/*.yml` file(s)
 1. Create the pundit policy with the **model's singular name**: `rails g pundit:policy role`
@@ -78,6 +79,7 @@ If you're creating Sidekiq jobs please use the generator: `rails g sidekiq:worke
     1. Make sure the resource extends `BaseResource`
     1. Add the appropriate attributes from the model that will be serialized in the JSONAPI payload
     1. Make sure all relationships you want exposed are added
+        * Make sure to declare your relationships on the inverse model as needed.
     1. Add any filters that use model scopes
     1. Unit test accordingly through the controller (next step)
 1. Create the protected controller using the **model's plural name** at the appropriate api path:
@@ -90,6 +92,26 @@ If you're creating Sidekiq jobs please use the generator: `rails g sidekiq:worke
 
 1. Use a branch and a pull request into master.
 1. Run `rubocop -a` prior to commits to make sure your code conforms to the formatting and linting.
+
+Uuse an emoji to help describe the commit:
+
+* 🎉 Initial Commit
+* 🔖 Version Tag
+* ✨ New Feature
+* 🐛 Bugfix
+* 🔒 Security Fix
+* 📇 Metadata
+* ♻️ Refactoring
+* 📚 Documentation
+* 🌐 Internationalization
+* ♿️ Accessibility
+* 🐎 Performance
+* 🎨 Cosmetic
+* 🔧 Tooling
+* 🚨 Tests
+* 💩 Deprecation
+* 🗑 Removal
+* 🚧 Work In Progress
 
 ----
 
@@ -170,7 +192,7 @@ strong key; all environments (development, test, etc.) require this to be set.
 
 `jwk_set` - the set of JWK from Cognito that will be used to decode supplied Authorization tokens.  Yours will be found
 at `https://cognito-idp.{region}.amazonaws.com/{userPoolId}/.well-known/jwks.json`.  
-Check out the Cognito docs: [https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-tokens-verifying-a-jwt.html#amazon-cognito-user-pools-using-tokens-step-2]
+Check out the Cognito docs: [https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-tokens-verifying-a-jwt.html#amazon-cognito-user-pools-using-tokens-step-2](https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-tokens-verifying-a-jwt.html#amazon-cognito-user-pools-using-tokens-step-2)
 By default, the TEST environment of this app does not use this JWK set.  DEVELOPMENT & PRODUCTION do use this unless
 you change the configuration through `config/initializers/ermahgerd.rb`.
 
