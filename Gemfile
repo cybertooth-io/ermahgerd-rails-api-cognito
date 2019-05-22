@@ -122,7 +122,9 @@ group :development do
 
   gem 'better_errors', '~> 2.5'
   gem 'letter_opener', '~> 1.6'
+
   gem 'rubocop', require: false
+  gem 'rubocop-performance'
 end
 
 group :test do

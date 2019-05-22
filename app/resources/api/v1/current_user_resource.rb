@@ -9,6 +9,16 @@ module Api
 
       immutable # no CUD through controller
 
+      # Singleton: http://jsonapi-resources.com/v0.9/guide/resources.html#Singleton-Resources
+      # ----------------------------------------------------------------------------------------------------------------
+
+      singleton singleton_key: lambda { |context|
+        key = context[:current_user].try(:id)
+        raise JSONAPI::Exceptions::RecordNotFound, nil if key.nil?
+
+        key
+      }
+
       # Attributes
       # ----------------------------------------------------------------------------------------------------------------
 
@@ -24,16 +34,6 @@ module Api
 
       has_many :roles
       has_many :sessions
-
-      # Overrides
-      # ----------------------------------------------------------------------------------------------------------------
-
-      def self.find_by_key(_key, options = {})
-        # TODO: interestingly enough; the `CurrentUser` model instance is what is stored in the context
-        # TODO: for some reason just returning it will not work
-        context = options[:context]
-        new(CurrentUser.find_by(id: context[:current_user].id), context)
-      end
     end
   end
 end

@@ -1,6 +1,9 @@
 # Defaults: https://github.com/rubocop-hq/rubocop/blob/master/config/default.yml
 # Configuration: https://docs.rubocop.org/en/latest/
 
+# See https://github.com/rubocop-hq/rubocop-performance
+require: rubocop-performance
+
 AllCops:
   Exclude:
     - db/**/*
